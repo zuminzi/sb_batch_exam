@@ -6,6 +6,7 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
@@ -23,6 +24,7 @@ public class HelloWorldJobConfig {
     @Bean
     public Job helloWorldJob() {
         return jobBuilderFactory.get("helloWorldJob")// Bean으로 찾기 때문에 job 이름은 유니크해야됨
+                .incrementer(new RunIdIncrementer()) // 강제로 매번 다른 ID를 실행시에 파라미터로 부여
                 .start(helloWorldStep1())
                 .build();
     }
