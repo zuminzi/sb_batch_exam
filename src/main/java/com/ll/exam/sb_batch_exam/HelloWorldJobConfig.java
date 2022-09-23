@@ -26,7 +26,11 @@ public class HelloWorldJobConfig {
     @Bean
     public Job helloWorldJob() {
         return jobBuilderFactory.get("helloWorldJob")// Bean으로 찾기 때문에 job 이름은 유니크해야됨
-                .incrementer(new RunIdIncrementer()) // 강제로 매번 다른 ID를 실행시에 파라미터로 부여
+                // 강제로 매번 다른 ID를 실행시에 파라미터로 부여
+                // 안붙이면 매번 실행시마다 table 비워줘야 됨
+                // 똑같은 명령은 두 번 실행하지 않기 때문
+                // 똑같은 명령인지 판단 기준: parameter
+                //.incrementer(new RunIdIncrementer())
                 .start(helloWorldStep1())
                 .next(helloWorldStep2()) // 스텝 추가
                 .build();
