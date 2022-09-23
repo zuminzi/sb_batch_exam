@@ -64,6 +64,12 @@ public class HelloWorldJobConfig {
         return (contribution, chunkContext) -> {
             System.out.println("헬로월드 테스클릿 2");
 
+            // DB batch_job_execution 테이블에서 status와 exit_code failed로 저장됨
+            // batch_job_execution 테이블에서 commit_count와 rollback_count 1로 저장됨
+            if ( true ) {
+                throw new Exception("실패 : 헬로월드 테스클릿 2");
+            }
+
             return RepeatStatus.FINISHED;
         };
     }
