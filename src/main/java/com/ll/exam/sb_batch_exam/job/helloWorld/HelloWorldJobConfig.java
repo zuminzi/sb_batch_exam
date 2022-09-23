@@ -1,4 +1,4 @@
-package com.ll.exam.sb_batch_exam;
+package com.ll.exam.sb_batch_exam.job.helloWorld;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
