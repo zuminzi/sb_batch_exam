@@ -1,4 +1,4 @@
-package com.ll.exam.app_2022_09_22.job.withParam;
+package com.ll.exam.sb_batch_exam.job.withParam;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
