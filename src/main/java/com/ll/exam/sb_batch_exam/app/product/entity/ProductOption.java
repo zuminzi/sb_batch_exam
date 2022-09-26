@@ -28,4 +28,10 @@ public class ProductOption extends BaseEntity {
         this.color = color;
         this.size = size;
     }
+
+    public boolean isOrderable(int quantity) {
+        if (isSoldOut() == false) return true;
+
+        return getStockQuantity() >= quantity;
+    }
 }
