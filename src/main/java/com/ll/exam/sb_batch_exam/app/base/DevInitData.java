@@ -30,14 +30,14 @@ public class DevInitData {
             Member member4 = memberService.join("user4", password, "user4@test.com");
 
             // 만원 충전
-            memberService.addCash(member1, 10_000);
+            memberService.addCash(member1, 10_000, "충전__무통장입금"); // 가독성 위해 자바 숫자 리터럴에 _ 사용가능
             // 이만원 충전
-            memberService.addCash(member1, 20_000);
+            memberService.addCash(member1, 20_000, "충전__무통장입금");
             // 5천원 사용
-            memberService.addCash(member1, -5_000);
+            memberService.addCash(member1, -5_000, "출금__일반");
             // 현재 보유중인 캐시 금액
             long restCash = memberService.getRestCash(member1);
-            log.debug("member1 restCash : " + restCash);
+            log.debug("member1 restCash : " + restCash); // 30000-5000
 
             Product product1 = productService.create("단가라 OPS", 68000, 45000, "청평화 A-1-15", Arrays.asList(new ProductOption("RED", "44"), new ProductOption("RED", "55"), new ProductOption("BLUE", "44"), new ProductOption("BLUE", "55")));
             Product product2 = productService.create("쉬폰 OPS", 72000, 55000, "청평화 A-1-15", Arrays.asList(new ProductOption("BLACK", "44"), new ProductOption("BLACK", "55"), new ProductOption("WHITE", "44"), new ProductOption("WHITE", "55")));
