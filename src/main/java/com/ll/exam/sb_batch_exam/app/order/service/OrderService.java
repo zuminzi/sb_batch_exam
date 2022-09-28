@@ -3,6 +3,7 @@ package com.ll.exam.sb_batch_exam.app.order.service;
 import com.ll.exam.sb_batch_exam.app.cart.entity.CartItem;
 import com.ll.exam.sb_batch_exam.app.cart.service.CartService;
 import com.ll.exam.sb_batch_exam.app.member.entity.Member;
+import com.ll.exam.sb_batch_exam.app.member.service.MemberService;
 import com.ll.exam.sb_batch_exam.app.order.entity.Order;
 import com.ll.exam.sb_batch_exam.app.order.entity.OrderItem;
 import com.ll.exam.sb_batch_exam.app.order.repository.OrderRepository;
@@ -20,6 +21,8 @@ import java.util.List;
 public class OrderService {
     private final CartService cartService;
     private final OrderRepository orderRepository;
+    private final MemberService memberService;
+
 
     @Transactional
     public Order createFromCart(Member member) {
@@ -59,5 +62,23 @@ public class OrderService {
         orderRepository.save(order);
 
         return order;
+    }
+
+    @Transactional // 서비스 클래스에 @Transactional(readOnly = true) 붙여서 @Transactional을 따로 안붙이면 디비에 반영안됨
+    public void payByRestCashOnly(Order order) {
+        Member orderer = order.getMember();
+
+        long restCash = orderer.getRestCash();
+
+        int payPrice = order.calculatePayPrice();
+
+        if (payPrice > restCash) {
+            throw new RuntimeException("예치금이 부족합니다.");
+        }
+
+        memberService.addCash(orderer, payPrice * -1, "주문결제__예치금결제");
+
+        order.setPaymentDone();
+        orderRepository.save(order);
     }
 }
