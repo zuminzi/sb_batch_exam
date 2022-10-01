@@ -80,6 +80,9 @@ public class DevInitData {
 
             // 결제
             orderService.payByRestCashOnly(order2);
+
+            // 환불
+            orderService.refund(order2);
         };
     }
 }

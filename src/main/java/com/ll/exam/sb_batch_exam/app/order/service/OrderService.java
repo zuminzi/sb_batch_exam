@@ -81,4 +81,11 @@ public class OrderService {
         order.setPaymentDone();
         orderRepository.save(order);
     }
+
+    // 서비스 레이어에서 환불 처리 -> refundDone 상태(this.refundQuantity = quantity; this.refundPrice = payPrice;)로 만들고 DB 저장
+    @Transactional
+    public void refund(Order order) {
+        order.setRefundDone();
+        orderRepository.save(order);
+    }
 }
