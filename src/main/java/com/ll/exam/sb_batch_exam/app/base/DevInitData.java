@@ -21,10 +21,15 @@ import java.util.List;
 @Configuration
 @Profile("dev")
 public class DevInitData {
+    private boolean initDataDone = false; // 데이터 처리 여부 체크
+
     @Bean
     public CommandLineRunner initData(MemberService memberService, ProductService productService, CartService cartService, OrderService orderService) {
         return args ->
         {
+            if (initDataDone) return;
+
+            initDataDone = true;
 
             class Helper {
                 public Order order(Member member, List<ProductOption> productOptions) {
