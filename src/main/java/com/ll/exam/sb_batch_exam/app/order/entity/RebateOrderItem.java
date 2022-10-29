@@ -9,9 +9,7 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 
 import static javax.persistence.FetchType.LAZY;
@@ -25,16 +23,19 @@ import static javax.persistence.FetchType.LAZY;
 @ToString(callSuper = true)
 public class RebateOrderItem extends BaseEntity {
     @OneToOne(fetch = LAZY)
+    @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     @ToString.Exclude
     private OrderItem orderItem;
 
 
     @ManyToOne(fetch = LAZY)
+    @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     @ToString.Exclude
     private Order order;
 
 
     @ManyToOne(fetch = LAZY)
+    @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private ProductOption productOption;
 
 
