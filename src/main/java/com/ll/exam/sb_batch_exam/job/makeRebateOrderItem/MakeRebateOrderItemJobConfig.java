@@ -17,6 +17,7 @@ import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.batch.item.data.builder.RepositoryItemReaderBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -68,15 +69,18 @@ public class MakeRebateOrderItemJobConfig {
     }
 
 
+    // RepositoryItemReader는 Spring Batch JpaPagingItemReader의 한 종류 -> 사용하는 메서드는 반드시 리턴타입 page로 받아줘야 됨
     @StepScope
     @Bean
-    public RepositoryItemReader<OrderItem> orderItemReader() {
-        return new RepositoryItemReaderBuilder<OrderItem>()
+    public RepositoryItemReader<OrderItem> orderItemReader(
+            @Value("#{jobParameters['fromId']}") long fromId,
+            @Value("#{jobParameters['toId']}") long toId
+    ) {        return new RepositoryItemReaderBuilder<OrderItem>()
                 .name("orderItemReader")
                 .repository(orderItemRepository)
-                .methodName("findAllByIdLessThan")
+                .methodName("findAllByIdBetween")
                 .pageSize(100)
-                .arguments(Arrays.asList(6L))
+                .arguments(Arrays.asList("fromId", "toId"))
                 .sorts(Collections.singletonMap("id", Sort.Direction.ASC))
                 .build();
     }
