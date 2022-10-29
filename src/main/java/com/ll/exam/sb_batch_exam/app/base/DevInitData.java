@@ -135,6 +135,14 @@ public class DevInitData {
                     )
             );
             orderService.payByRestCashOnly(order4);
+
+
+            // 주문 O, 결제 X
+            Order order5 = helper.order(member1, Arrays.asList(
+                            product1Option__RED_44,
+                            product2Option__WHITE_44
+                    )
+            );
         };
     }
 }

@@ -11,6 +11,8 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+import java.time.LocalDateTime;
+
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -36,6 +38,8 @@ public class OrderItem extends BaseEntity {
     private int refundPrice; // 환불금액
     private int refundQuantity; // 환불한 개수
     private boolean isPaid; // 결제여부
+    private LocalDateTime payDate; // 결제날짜
+
 
     public OrderItem(ProductOption productOption, int quantity) {
         this.productOption = productOption;
@@ -53,6 +57,7 @@ public class OrderItem extends BaseEntity {
         this.pgFee = 0;
         this.payPrice = calculatePayPrice();
         this.isPaid = true;
+        this.payDate = LocalDateTime.now();
     }
 
     public void setRefundDone() {
