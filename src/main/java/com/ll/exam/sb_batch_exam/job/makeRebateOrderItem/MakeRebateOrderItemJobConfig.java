@@ -4,6 +4,7 @@ import com.ll.exam.sb_batch_exam.app.order.entity.OrderItem;
 import com.ll.exam.sb_batch_exam.app.order.entity.RebateOrderItem;
 import com.ll.exam.sb_batch_exam.app.order.repository.OrderItemRepository;
 import com.ll.exam.sb_batch_exam.app.order.repository.RebateOrderItemRepository;
+import com.ll.exam.sb_batch_exam.util.Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -24,6 +25,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -72,13 +74,18 @@ public class MakeRebateOrderItemJobConfig {
     // RepositoryItemReader는 Spring Batch JpaPagingItemReader의 한 종류 -> 사용하는 메서드는 반드시 리턴타입 page로 받아줘야 됨
     @StepScope
     @Bean
-    public RepositoryItemReader<OrderItem> orderItemReader() {
+    public RepositoryItemReader<OrderItem> orderItemReader(
+            @Value("#{jobParameters['month']}") String yearMonth
+    ) {
+        int monthEndDay = Util.date.getEndDayOf(yearMonth);
+        LocalDateTime fromDate = Util.date.parse(yearMonth + "-01 00:00:00.000000");
+        LocalDateTime toDate = Util.date.parse(yearMonth + "-%02d 23:59:59.999999".formatted(monthEndDay));
         return new RepositoryItemReaderBuilder<OrderItem>()
                 .name("orderItemReader")
                 .repository(orderItemRepository)
-                .methodName("findAllByIsPaid")
+                .methodName("findAllByPayDateBetween")
                 .pageSize(100)
-                .arguments(Arrays.asList(true))
+                .arguments(Arrays.asList(fromDate, toDate))
                 .sorts(Collections.singletonMap("id", Sort.Direction.ASC))
                 .build();
     }
