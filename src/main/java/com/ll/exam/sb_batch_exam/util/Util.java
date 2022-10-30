@@ -7,14 +7,7 @@ public class Util {
     public static class date {
 
         public static int getEndDayOf(int year, int month) {
-            String yearMonth = year + "-";
-            String monthStr = month + "";
-
-            if ( monthStr.length() == 1 ) {
-                monthStr = "0" + monthStr;
-            }
-
-            yearMonth += monthStr;
+            String yearMonth = year + "-" + "%02d".formatted(month);
 
             return getEndDayOf(yearMonth);
         }
