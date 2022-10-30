@@ -1,6 +1,7 @@
 package com.ll.exam.sb_batch_exam.util;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Util {
@@ -18,6 +19,11 @@ public class Util {
                     convertedDate.getMonth().length(convertedDate.isLeapYear()));
 
             return convertedDate.getDayOfMonth();
+        }
+
+        // String -> LocalDateTime
+        public static LocalDateTime parse(String pattern, String dateText) {
+            return LocalDateTime.parse(dateText, DateTimeFormatter.ofPattern(pattern));
         }
     }
 }
